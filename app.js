@@ -1,48 +1,45 @@
+const { contactsController } = require('./controllers');
 const express = require('express');
 
-const { validate, errorHandlers } = require('./middleware');
-const { contactsController } = require('./controllers');
+console.log('contactsController :>> ', contactsController);
 
+// Створення екземпляру експресу
 const app = express();
 
+// Middleware to parse json to js-object
 app.use(express.json());
 
-app.get(
-  '/',
-  (req, res, next) => {
-    console.log('handler 1 :>> ');
-    next();
-  },
-  (req, res) => {
-    console.log('handler 2 :>> ');
-    res.send('app )))');
-  }
-);
+app.get('/', (req, res) => {
+  res.send('app )))');
+});
 
-// GET /constacts?page=1&results=5
-app.get('/contacts/', contactsController.getContacts);
+// CRUD
+// Навішування обробника на метод GET на маршрут '/contacts'
+app.get('/contacts', contactsController.getContact);
 
-// POST /contacts (body)
-app.post(
-  '/contacts',
-  validate.validateContactOnCreate,
-  contactsController.createContact
-);
+// Навішування обробника на метод POST на маршрут '/contacts'
+app.post('/contacts', contactsController.createContact);
 
-// GET /contacts/5
-app.get('/contacts/:id', contactsController.getContactById);
+app.get('/contacts/:id', (req, res) => {
+  const {
+    params: { id },
+    query: { result, page },
+  } = req;
 
-// PATCH /contacts/5 (body)
-app.patch(
-  '/contacts/:id',
-  validate.validateContactOnUpdate,
-  contactsController.updateContactById
-);
+  console.log('req.params :>> ', req.params);
+  console.log('req.query :>> ', req.query);
+  res.status(200).send('OK');
+});
 
-// реалізувати endpoint для видалення конкретного контакту
-// DELETE /contacts/5
-app.delete('/contacts/:id', contactsController.deleteContactById);
+app.get('/users/:id/order', (req, res) => {
+  const {
+    params: { id },
+    query: { isDone },
+  } = req;
 
-app.use(errorHandlers.validationErrorHandler, errorHandlers.errorHandler);
+  console.log('req.params :>> ', req.params);
+  console.log('req.query :>> ', req.query);
+  res.status(200).send('OK)))');
+});
 
 module.exports = app;
