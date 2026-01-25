@@ -6,6 +6,45 @@ module.exports.getContact = (req, res) => {
 };
 
 module.exports.createContact = (req, res) => {
-  const createdContact = ContactDB.createContact(req.body);
+  const { body } = req;
+  const createdContact = ContactDB.createContact(body);
   res.status(201).send(createdContact);
+};
+
+module.exports.getContactById = (req, res) => {
+  const { id } = req.params;
+
+  const foundContact = ContactDB.getContactById(id);
+
+  if (foundContact) {
+    return res.status(200).send(foundContact);
+  }
+  res.status(404).send('Contact Not Found');
+};
+
+module.exports.updateContactById = (req, res) => {
+  const {
+    params: { id },
+    body,
+  } = req;
+
+  const updateContact = ContactDB.updateContact(id, body);
+
+  if (updateContact) {
+    return res.status(200).send(updateContact);
+  }
+  res.status(404).send('Contact Not Found');
+};
+
+module.exports.deleteContactById = (req, res) => {
+  const {
+    params: { id },
+  } = req;
+
+  const deleteContact = ContactDB.deleteContact(id);
+
+  if (deleteContact) {
+    return res.status(200).send(deleteContact);
+  }
+  res.status(404).send('Contact Not Found');
 };

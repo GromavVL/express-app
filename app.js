@@ -15,10 +15,16 @@ app.get('/', (req, res) => {
 
 // CRUD
 // Навішування обробника на метод GET на маршрут '/contacts'
-app.get('/contacts', contactsController.getContact);
+app.get('/contacts/', contactsController.getContact);
 
 // Навішування обробника на метод POST на маршрут '/contacts'
 app.post('/contacts', contactsController.createContact);
+
+app.get('/contacts/:id', contactsController.getContactById);
+
+app.patch('/contacts/:id', contactsController.updateContactById);
+
+app.delete('/contacts/:id', contactsController.deleteContactById);
 
 app.get('/contacts/:id', (req, res) => {
   const {
