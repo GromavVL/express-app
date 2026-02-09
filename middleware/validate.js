@@ -1,17 +1,7 @@
-const yup = require('yup');
-
-const CREATE_CONTACT_VALIDATIONS_SHEMA = yup.object({
-  name: yup.string().trim().min(2).max(64).required(),
-  telNumber: yup
-    .string()
-    .trim()
-    .matches(
-      /^\+380\d{9}$/,
-      'Tel number must corresponds pattern +380111111111'
-    )
-    .required(),
-  birthday: yup.date().max(new Date()),
-});
+const {
+  CREATE_CONTACT_VALIDATIONS_SHEMA,
+  UPDATE_CONTACT_VALIDATIONS_SHEMA,
+} = require('../utils/validationsShemas');
 
 module.exports.validateContactOnCreate = async (req, res, next) => {
   const { body } = req;
@@ -27,6 +17,13 @@ module.exports.validateContactOnCreate = async (req, res, next) => {
   }
 };
 
-module.exports.validateContactOnUpdate = (req, res, next) => {
-  next();
+module.exports.validateContactOnUpdate = async (req, res, next) => {
+  const { body } = req;
+
+  try {
+    const updateContact = await UPDATE_CONTACT_VALIDATIONS_SHEMA.validate(body);
+    req.body = updateContact;
+  } catch (e) {
+    res.status(422).send('Validation Error');
+  }
 };
