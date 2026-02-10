@@ -13,7 +13,7 @@ module.exports.validateContactOnCreate = async (req, res, next) => {
     req.body = validateContact;
     next();
   } catch (e) {
-    res.status(422).send('Validation Error');
+    next(e);
   }
 };
 
@@ -23,7 +23,8 @@ module.exports.validateContactOnUpdate = async (req, res, next) => {
   try {
     const updateContact = await UPDATE_CONTACT_VALIDATIONS_SHEMA.validate(body);
     req.body = updateContact;
+    next();
   } catch (e) {
-    res.status(422).send('Validation Error');
+    next(e);
   }
 };

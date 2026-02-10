@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { contactsController } = require('./controllers');
-const { validate } = require('./middleware');
+const { validate, errorHandlers } = require('./middleware');
 
 // console.log('contactsController :>> ', contactsController);
 
@@ -69,5 +69,7 @@ app.get('/users/:id/order', (req, res) => {
   console.log('req.query :>> ', req.query);
   res.status(200).send('OK)))');
 });
+
+app.use(errorHandlers.validationsErrorHandler, errorHandlers.errorHandler);
 
 module.exports = app;
