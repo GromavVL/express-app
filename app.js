@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { contactsController } = require('./controllers');
+const { contactsController, dogsControllers } = require('./controllers');
 const { validate, errorHandlers } = require('./middleware');
 
 // console.log('contactsController :>> ', contactsController);
@@ -69,6 +69,10 @@ app.get('/users/:id/order', (req, res) => {
   console.log('req.query :>> ', req.query);
   res.status(200).send('OK)))');
 });
+
+app.post('/dogs', dogsControllers.createDog);
+
+app.patch('/dogs/:id', dogsControllers.updateDog);
 
 app.use(errorHandlers.validationsErrorHandler, errorHandlers.errorHandler);
 

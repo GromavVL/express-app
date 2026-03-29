@@ -1,0 +1,15 @@
+POST http://localhost:5000/dogs
+Content-Type: application/json
+
+{
+    "name": "Dog2",
+    "age": 10
+}
+
+PATCH http://localhost:5000/dogs/10
+Content-Type: application/json
+
+{
+    "name": "Dog365",
+    "ageddff": 7
+}
